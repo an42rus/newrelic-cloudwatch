@@ -6,7 +6,7 @@
 FROM ubuntu:14.04
 MAINTAINER Kingsquare <docker@kingsquare.nl>
 
-WORKDIR /usr/local/newrelic_aws_cloudwatch_plugin-latest
+WORKDIR /usr/local/newrelic_aws_cloudwatch_plugin-master
 
 ####
 # Base stuff, software dependencies from APT
@@ -19,8 +19,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 	apt-get autoremove --purge && \
 	apt-get clean && \
 	gem install --no-rdoc --no-ri bundler && \
-	curl -L https://github.com/newrelic-platform/newrelic_aws_cloudwatch_plugin/archive/master.tar.gz > latest.tar.gz && \
-	tar -zxf latest.tar.gz -C /usr/local && \
+	curl -L https://github.com/newrelic-platform/newrelic_aws_cloudwatch_plugin/archive/master.tar.gz > master.tar.gz && \
+	tar -zxf master.tar.gz -C /usr/local && \
 	cp config/template_newrelic_plugin.yml config/newrelic_plugin.yml && \
 	sed -e "s/YOUR_LICENSE_KEY_HERE/<%= ENV[\"NEWRELIC_KEY\"] %>/g" -i config/newrelic_plugin.yml && \
 	sed -e "s/YOUR_AWS_ACCESS_KEY_HERE/<%= ENV[\"AWS_ACCESS_KEY\"] %>/g" -i config/newrelic_plugin.yml && \
@@ -28,6 +28,6 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 	bundle install --clean --quiet --without test && \
 	apt-get remove -yq --purge build-essential curl ruby-dev libxml2-dev libxslt-dev && \
 	apt-get autoremove -yq --purge && \
-	rm -rf latest.tar.gz /tmp/* /var/tmp/* /var/lib/apt/lists/*
+	rm -rf master.tar.gz /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 ENTRYPOINT ["bundle", "exec", "./bin/newrelic_aws"]
