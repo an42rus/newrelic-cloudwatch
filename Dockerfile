@@ -8,6 +8,8 @@ MAINTAINER Kingsquare <docker@kingsquare.nl>
 
 WORKDIR /usr/local/newrelic_aws_cloudwatch_plugin-master
 
+ADD newrelic_plugin.yml config/newrelic_plugin.yml
+
 ####
 # Base stuff, software dependencies from APT
 # App installation: latest version of the newrelic plugin
@@ -21,7 +23,6 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 	gem install --no-rdoc --no-ri bundler && \
 	curl -L https://github.com/newrelic-platform/newrelic_aws_cloudwatch_plugin/archive/master.tar.gz > master.tar.gz && \
 	tar -zxf master.tar.gz -C /usr/local && \
-	cp config/template_newrelic_plugin.yml config/newrelic_plugin.yml && \
 	sed -e "s/YOUR_LICENSE_KEY_HERE/<%= ENV[\"NEWRELIC_KEY\"] %>/g" -i config/newrelic_plugin.yml && \
 	sed -e "s/YOUR_AWS_ACCESS_KEY_HERE/<%= ENV[\"AWS_ACCESS_KEY\"] %>/g" -i config/newrelic_plugin.yml && \
 	sed -e "s/YOUR_AWS_SECRET_KEY_HERE/<%= ENV[\"AWS_SECRET_KEY\"] %>/g" -i config/newrelic_plugin.yml && \
